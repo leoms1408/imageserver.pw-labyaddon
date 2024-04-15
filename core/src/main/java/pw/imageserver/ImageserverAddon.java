@@ -4,7 +4,6 @@ import pw.imageserver.listener.ScreenshotListener;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
-import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.models.addon.annotation.AddonMain;
 import pw.imageserver.command.ImageserverCommand;
 

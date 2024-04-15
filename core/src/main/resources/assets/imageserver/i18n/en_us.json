@@ -1,0 +1,49 @@
+{
+    "imageserver": {
+        "settings": {
+            "name": "imageserver Uploader",
+            "enabled": {
+                "name": "Enabled"
+            },
+            "doubleUploads": {
+                "name": "Ask before double uploads",
+                "description": "If you activate this option and click the \"Upload\" button for an already uploaded screenshot, you'll be prompted to confirm whether you want to upload the screenshot again."
+            },
+            "openRegisterPage": {
+                "name": "Register on imageserver",
+                "description": "Signup and grab your AUTH Key on https://imageserver.pw/dashboard",
+                "text": "Register"
+            },
+            "token": {
+                "name": "AUTH Key",
+                "description": "You can find your AUTH Key here: https://imageserver.pw/dashboard"
+            },
+            "header": {
+                "register": {
+                    "name": "§7In order to use this addon, you need to register and copy your AUTH Key."
+                },
+                "token": {
+                    "name": "§7You can find your AUTH Key on your Account dashboard"
+                }
+            }
+        },
+        "messages": {
+            "uploadAnyway": "Upload it anyway?",
+            "upload": "To upload the screenshot, simply click here and send it off to imageserver.pw!",
+            "uploading": "Uploading screenshot...",
+            "uploaded": "Screenshot uploaded! %s %s"
+        },
+        "upload": {
+            "hover": "Click :)",
+            "copy": "[COPY URL]",
+            "open": "[OPEN IN BROWSER]"
+        },
+        "errors": {
+            "title": "An error ocurred!",
+            "empty": "We encountered an issue. Please verify your AUTH Key.",
+            "noToken": "Oh snap! Make sure to pop your AUTH Key into the addon config, like milk into your morning cereal.",
+            "file": "File not found!",
+            "alreadyUploaded": "You've already uploaded this screenshot! %s"
+        }
+    }
+}

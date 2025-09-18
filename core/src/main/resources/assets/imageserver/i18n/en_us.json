@@ -20,7 +20,7 @@
             },
             "header": {
                 "register": {
-                    "name": "§7In order to use this addon, you need to register and copy your AUTH Key."
+                    "name": "§7When you use this addon without an AUTH Key, your screenshots will be deleted after 7 days."
                 },
                 "token": {
                     "name": "§7You can find your AUTH Key on your Account dashboard"
@@ -29,9 +29,10 @@
         },
         "messages": {
             "uploadAnyway": "Upload it anyway?",
-            "upload": "To upload the screenshot, simply click here and send it off to imageserver.pw!",
+            "upload": "Click on \"Upload\" to upload your screenshot",
             "uploading": "Uploading screenshot...",
-            "uploaded": "Screenshot uploaded! %s %s"
+            "uploaded": "Screenshot uploaded! %s %s",
+            "noToken": "You don't have an AUTH Key. When you continue your screenshot will be deleted after 7 days."
         },
         "upload": {
             "hover": "Click :)",
@@ -43,7 +44,8 @@
             "empty": "We encountered an issue. Please verify your AUTH Key.",
             "noToken": "Oh snap! Make sure to pop your AUTH Key into the addon config, like milk into your morning cereal.",
             "file": "File not found!",
-            "alreadyUploaded": "You've already uploaded this screenshot! %s"
+            "alreadyUploaded": "You've already uploaded this screenshot! %s",
+            "uploadCancelled": "Screenshot upload cancelled!"
         }
     }
 }

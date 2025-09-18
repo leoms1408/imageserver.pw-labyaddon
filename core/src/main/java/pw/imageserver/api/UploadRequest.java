@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class UploadRequest {
@@ -30,7 +31,8 @@ public class UploadRequest {
         try {
             MultipartData data = MultipartData.newBuilder().addFile("file", file.toPath(), "image/png").build();
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("https://imageserver.pw/upload"))
+                .uri(new URI(
+                    Objects.equals(this.token, "addon") ? "https://imageserver.pw/upload/addon" : "https://imageserver.pw/upload"))
                 .header("Content-Type", data.getContentType())
                 .header("X-IMAGESERVER-AUTH-KEY", token)
                 .method("POST", data.getBodyPublisher())
@@ -44,7 +46,7 @@ public class UploadRequest {
                     if(successful) {
                         uploadLink = response.body();
                     } else {
-                        error = I18n.translate("imageserver.errors.empty");
+                        error = response.body();
                     }
                     future.complete(null);
                 })

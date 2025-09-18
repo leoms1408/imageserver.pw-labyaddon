@@ -21,14 +21,11 @@ public class ImageserverConfig extends AddonConfig {
     @SpriteSlot(size = 32)
     @SwitchSetting
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
-    @SpriteSlot(size = 32, x = 1)
-    @SwitchSetting
-    private final ConfigProperty<Boolean> doubleUploads = new ConfigProperty<>(true);
 
 
     @SettingSection("token")
-    @MethodOrder(after = "doubleUploads")
-    @SpriteSlot(size = 32, x = 2)
+    @MethodOrder(after = "enabled")
+    @SpriteSlot(size = 32, x = 1)
     @ButtonSetting
     public void openRegisterPage(Setting setting) {
         new Timer().schedule(
@@ -42,16 +39,13 @@ public class ImageserverConfig extends AddonConfig {
     }
 
     @MethodOrder(after = "openRegisterPage")
-    @SpriteSlot(size = 32, x = 3)
+    @SpriteSlot(size = 32, x = 2)
     @TextFieldSetting
     private final ConfigProperty<String> token = new ConfigProperty<>("");
 
     @Override
     public ConfigProperty<Boolean> enabled() {
         return enabled;
-    }
-    public boolean doubleUploads() {
-        return doubleUploads.get();
     }
 
     public String token() {

@@ -1,8 +1,10 @@
+/*
+ * Copyright (c) 2025 leoms1408
+ * Licensed under the Apache License, Version 2.0
+ */
+
 package pw.imageserver.api;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import net.labymod.api.util.I18n;
 import java.io.File;
 import java.net.URI;
 import java.net.http.HttpClient;

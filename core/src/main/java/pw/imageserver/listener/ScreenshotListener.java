@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2025 leoms1408
+ * Licensed under the Apache License, Version 2.0
+ */
+
 package pw.imageserver.listener;
 
 import net.labymod.api.client.gui.icon.Icon;

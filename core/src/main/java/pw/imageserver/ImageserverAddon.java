@@ -1,10 +1,13 @@
+/*
+ * Copyright (c) 2025 leoms1408
+ * Licensed under the Apache License, Version 2.0
+ */
+
 package pw.imageserver;
 
 import net.labymod.api.Laby;
 import pw.imageserver.listener.ScreenshotListener;
 import net.labymod.api.addon.LabyAddon;
-import net.labymod.api.client.component.Component;
-import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.models.addon.annotation.AddonMain;
 
 @AddonMain

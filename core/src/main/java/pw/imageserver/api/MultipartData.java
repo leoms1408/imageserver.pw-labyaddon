@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2025 leoms1408
+ * Licensed under the Apache License, Version 2.0
+ */
+
 package pw.imageserver.api;
 
 import java.io.ByteArrayOutputStream;

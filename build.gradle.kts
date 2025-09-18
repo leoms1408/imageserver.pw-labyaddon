@@ -34,4 +34,5 @@ labyMod {
 subprojects {
     plugins.apply("net.labymod.labygradle")
     plugins.apply("net.labymod.labygradle.addon")
+
 }

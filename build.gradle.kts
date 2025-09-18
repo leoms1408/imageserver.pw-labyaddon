@@ -34,9 +34,4 @@ labyMod {
 subprojects {
     plugins.apply("net.labymod.labygradle")
     plugins.apply("net.labymod.labygradle.addon")
-    plugins.apply("org.cadixdev.licenser")
-    license {
-        header(rootProject.file("gradle/LICENSE-HEADER.txt"))
-        newLine.set(true)
-    }
 }

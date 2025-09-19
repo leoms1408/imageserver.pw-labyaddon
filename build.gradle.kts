@@ -7,6 +7,14 @@ plugins {
     id("org.cadixdev.licenser") version ("0.6.1")
 }
 
+license {
+    header.set(resources.text.fromFile(rootProject.file("gradle/license-header.txt")))
+    newLine.set(true)
+    // Recognize any of these markers as a valid license header in files
+    keywords.set(listOf("Copyright", "SPDX-License-Identifier", "Licensed under the Apache License"))
+    include("**/*.java")
+}
+
 val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().split(";")
 
 group = "pw.imageserver"

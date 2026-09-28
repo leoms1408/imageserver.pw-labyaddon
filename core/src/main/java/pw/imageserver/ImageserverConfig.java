@@ -16,8 +16,8 @@ import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.Setting;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.MethodOrder;
-import java.util.Timer;
-import java.util.TimerTask;
+import net.labymod.api.util.concurrent.task.Task;
+import java.util.concurrent.TimeUnit;
 
 @SpriteTexture("settings")
 public class ImageserverConfig extends AddonConfig {
@@ -33,14 +33,10 @@ public class ImageserverConfig extends AddonConfig {
     @SpriteSlot(size = 32, x = 1)
     @ButtonSetting
     public void openRegisterPage(Setting setting) {
-        new Timer().schedule(
-            new TimerTask() {
-                @Override
-                public void run() {
-                    Laby.labyAPI().minecraft().chatExecutor()
-                        .openUrl("https://imageserver.pw/login", false);
-                }
-            }, 650);
+        Task.builder(() -> {
+            Laby.labyAPI().minecraft().chatExecutor()
+                .openUrl("https://imageserver.pw/login", false);
+        }).delay(650, TimeUnit.MILLISECONDS).build().execute();
     }
 
     @MethodOrder(after = "openRegisterPage")

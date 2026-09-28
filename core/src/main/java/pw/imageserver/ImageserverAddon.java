@@ -5,7 +5,6 @@
 
 package pw.imageserver;
 
-import net.labymod.api.Laby;
 import pw.imageserver.listener.ScreenshotListener;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
@@ -16,9 +15,9 @@ public class ImageserverAddon extends LabyAddon<ImageserverConfig> {
     @Override
     protected void enable() {
         registerSettingCategory();
-        Laby.labyAPI().config().notifications().screenshot().set(false);
         registerListener(new ScreenshotListener(this));
     }
+
 
     @Override
     protected Class<? extends ImageserverConfig> configurationClass() {

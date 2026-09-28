@@ -5,10 +5,6 @@
             "enabled": {
                 "name": "Enabled"
             },
-            "doubleUploads": {
-                "name": "Ask before double uploads",
-                "description": "If you activate this option and click the \"Upload\" button for an already uploaded screenshot, you'll be prompted to confirm whether you want to upload the screenshot again."
-            },
             "openRegisterPage": {
                 "name": "Register on imageserver",
                 "description": "Signup and grab your AUTH Key on https://imageserver.pw/dashboard",
@@ -20,31 +16,28 @@
             },
             "header": {
                 "register": {
-                    "name": "§7When you use this addon without an AUTH Key, your screenshots will be deleted after 7 days."
+                    "name": "When you use this addon without an AUTH Key, your screenshots will be deleted after 7 days."
                 },
                 "token": {
-                    "name": "§7You can find your AUTH Key on your Account dashboard"
+                    "name": "You can find your AUTH Key on your Account dashboard"
                 }
             }
         },
+        "notification": {
+            "title": "imageserver.pw"
+        },
         "messages": {
-            "uploadAnyway": "Upload it anyway?",
-            "upload": "Click on \"Upload\" to upload your screenshot",
-            "uploading": "Uploading screenshot...",
-            "uploaded": "Screenshot uploaded! %s %s",
             "noToken": "You don't have an AUTH Key. When you continue your screenshot will be deleted after 7 days."
         },
-        "upload": {
-            "hover": "Click :)",
-            "copy": "[COPY URL]",
-            "open": "[OPEN IN BROWSER]"
+        "buttons": {
+            "upload": "Upload",
+            "continue": "Continue",
+            "cancel": "Cancel"
         },
         "errors": {
-            "title": "An error ocurred!",
-            "empty": "We encountered an issue. Please verify your AUTH Key.",
-            "noToken": "Oh snap! Make sure to pop your AUTH Key into the addon config, like milk into your morning cereal.",
+            "title": "An error occurred!",
+            "unknown": "The upload failed for an unknown reason.",
             "file": "File not found!",
-            "alreadyUploaded": "You've already uploaded this screenshot! %s",
             "uploadCancelled": "Screenshot upload cancelled!"
         }
     }

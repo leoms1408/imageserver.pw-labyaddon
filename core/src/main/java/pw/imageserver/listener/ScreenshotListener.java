@@ -5,22 +5,20 @@
 
 package pw.imageserver.listener;
 
+import net.labymod.api.Laby;
+import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.icon.Icon;
-import net.labymod.api.event.Phase;
+import net.labymod.api.event.Subscribe;
+import net.labymod.api.event.client.misc.ScreenshotNotificationEvent;
 import net.labymod.api.notification.Notification;
 import net.labymod.api.notification.Notification.Builder;
 import net.labymod.api.notification.Notification.NotificationButton;
 import net.labymod.api.notification.Notification.Type;
 import pw.imageserver.ImageserverAddon;
 import pw.imageserver.api.UploadRequest;
-import net.labymod.api.Laby;
-import net.labymod.api.client.component.Component;
-import net.labymod.api.client.component.format.Style;
-import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.client.misc.WriteScreenshotEvent;
 
-import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class ScreenshotListener {
 
@@ -31,100 +29,67 @@ public class ScreenshotListener {
     }
 
     @Subscribe
-    public void onScreenshot(WriteScreenshotEvent event) {
-        if (addon.configuration().enabled().get() == false)
+    public void onScreenshotNotification(ScreenshotNotificationEvent event) {
+        if (!addon.configuration().enabled().get())
             return;
 
-        if (event.getPhase() == Phase.POST) {
-            event.setCancelled(true);
-            Builder builder = Notification.builder()
-                .title(Component.text("imageserver.pw"))
-                .text(Component.translatable("imageserver.messages.upload", Style.empty()))
-                .icon(Icon.url("https://imageserver.pw/img/logo.png"))
-                .addButton(NotificationButton.primary(Component.text("Upload"),
-                    () -> {
-                        AtomicReference<String> tokenRef = new AtomicReference<>(addon.configuration().token());
+        Path screenshotPath = event.getScreenshotPath();
+        event.getNotificationBuilder()
+            .clearButtons()
+            .addButton(NotificationButton.primary(Component.translatable("imageserver.buttons.upload"),
+                () -> {
+                    String token = addon.configuration().token();
 
-                        if (tokenRef.get() == null || tokenRef.get().isBlank()) {
-                            Builder confirm = Notification.builder()
-                                .title(Component.text("imageserver.pw"))
-                                .text(Component.translatable("imageserver.messages.noToken", Style.empty()))
-                                .icon(Icon.url("https://imageserver.pw/img/logo.png"))
-                                .addButton(NotificationButton.primary(Component.text("Continue"), () -> {
-                                    performUpload(event, "addon");
-                                }))
-                                .addButton(NotificationButton.primary(Component.text("Cancel"), () -> {
-                                    Builder cancelled = Notification.builder()
-                                        .title(Component.text("imageserver.pw"))
-                                        .text(Component.translatable("imageserver.errors.uploadCancelled", Style.empty()))
-                                        .type(Type.SYSTEM);
-                                    Laby.labyAPI().notificationController().push(cancelled.build());
-                                }))
-                                .type(Type.SYSTEM);
-                            Laby.labyAPI().notificationController().push(confirm.build());
-                            return;
-                        }
+                    if (token == null || token.isBlank()) {
+                        Builder confirm = notification()
+                            .text(Component.translatable("imageserver.messages.noToken"))
+                            .addButton(NotificationButton.primary(Component.translatable("imageserver.buttons.continue"),
+                                () -> performUpload(screenshotPath, "addon")))
+                            .addButton(NotificationButton.primary(Component.translatable("imageserver.buttons.cancel"),
+                                () -> push(notification().text(Component.translatable("imageserver.errors.uploadCancelled")))));
+                        push(confirm);
+                        return;
+                    }
 
-                        performUpload(event, tokenRef.get());
-                    }))
-                .type(Type.SYSTEM);
-            Laby.labyAPI().notificationController().push(builder.build());
-        }
+                    performUpload(screenshotPath, token);
+                }));
     }
 
-    private void performUpload(WriteScreenshotEvent event, String token) {
-        try {
-            byte[] imageBytes = event.getImage();
-
-            if (imageBytes == null || imageBytes.length == 0) {
-                Builder error = Notification.builder()
-                    .title(Component.text("imageserver.pw"))
-                    .text(Component.translatable("imageserver.errors.file", Style.empty()))
-                    .icon(Icon.url("https://imageserver.pw/img/logo.png"))
-                    .type(Type.SYSTEM);
-                Laby.labyAPI().notificationController().push(error.build());
-                return;
-            }
-
-            File tempFile = File.createTempFile("labymod_addon_", ".png");
-            java.nio.file.Files.write(tempFile.toPath(), imageBytes);
-
-            UploadRequest request = new UploadRequest(tempFile, token);
-            request.sendAsyncRequest().thenAccept((v) -> {
-                try {
-                    if (request.isSuccessful()) {
-                        Laby.references().chatExecutor().openUrl(request.getUploadLink(), false);
-                    } else {
-                        Builder error = Notification.builder()
-                            .title(Component.text("imageserver.pw"))
-                            .text(Component.text(request.getError()))
-                            .icon(Icon.url("https://imageserver.pw/img/logo.png"))
-                            .type(Type.SYSTEM);
-                        Laby.labyAPI().notificationController().push(error.build());
-                    }
-                } finally {
-                    try { tempFile.delete(); } catch (Exception ignored) { }
-                }
-            }).exceptionally((e) -> {
-                try {
-                    Builder error = Notification.builder()
-                        .title(Component.text("imageserver.pw"))
-                        .text(Component.text(e.getMessage()))
-                        .icon(Icon.url("https://imageserver.pw/img/logo.png"))
-                        .type(Type.SYSTEM);
-                    Laby.labyAPI().notificationController().push(error.build());
-                } finally {
-                    try { tempFile.delete(); } catch (Exception ignored) { }
-                }
-                return null;
-            });
-        } catch (Exception e) {
-            Builder error = Notification.builder()
-                .title(Component.text("imageserver.pw"))
-                .text(Component.text(e.getMessage()))
-                .icon(Icon.url("https://imageserver.pw/img/logo.png"))
-                .type(Type.SYSTEM);
-            Laby.labyAPI().notificationController().push(error.build());
+    private void performUpload(Path screenshotPath, String token) {
+        if (!Files.isRegularFile(screenshotPath)) {
+            push(notification().text(Component.translatable("imageserver.errors.file")));
+            return;
         }
+
+        UploadRequest request = new UploadRequest(screenshotPath.toFile(), token);
+        request.sendAsyncRequest().thenAccept((v) -> {
+            if (request.isSuccessful()) {
+                Laby.references().chatExecutor().openUrl(request.getUploadLink(), false);
+            } else {
+                pushError(request.getError());
+            }
+        }).exceptionally((e) -> {
+            pushError(e.getMessage());
+            return null;
+        });
+    }
+
+    private static Builder notification() {
+        return Notification.builder()
+            .title(Component.translatable("imageserver.notification.title"))
+            .icon(Icon.url("https://imageserver.pw/img/logo.png"))
+            .type(Type.SYSTEM);
+    }
+
+    private static void pushError(String message) {
+        // Server responses and exception messages are dynamic and cannot be translated
+        Component text = message == null || message.isBlank()
+            ? Component.translatable("imageserver.errors.unknown")
+            : Component.text(message);
+        push(notification().title(Component.translatable("imageserver.errors.title")).text(text));
+    }
+
+    private static void push(Builder builder) {
+        Laby.labyAPI().notificationController().push(builder.build());
     }
 }

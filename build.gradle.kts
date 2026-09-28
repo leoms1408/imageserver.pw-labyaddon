@@ -8,6 +8,8 @@ plugins {
 }
 
 spotless {
+    lineEndings = com.diffplug.spotless.LineEnding.UNIX
+
     // Checks that every Java file starts with the license header (spotlessApply adds it)
     format("licenseHeader") {
         target("**/src/**/*.java")

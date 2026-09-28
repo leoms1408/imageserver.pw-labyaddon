@@ -4,15 +4,15 @@ import net.labymod.labygradle.common.internal.labymod.addon.model.AddonMeta
 plugins {
     id("net.labymod.labygradle")
     id("net.labymod.labygradle.addon")
-    id("org.cadixdev.licenser") version ("0.6.1")
+    id("com.diffplug.spotless") version ("8.10.3")
 }
 
-license {
-    header.set(resources.text.fromFile(rootProject.file("gradle/license-header.txt")))
-    newLine.set(true)
-    // Recognize any of these markers as a valid license header in files
-    keywords.set(listOf("Copyright", "SPDX-License-Identifier", "Licensed under the Apache License"))
-    include("**/*.java")
+spotless {
+    // Checks that every Java file starts with the license header (spotlessApply adds it)
+    format("licenseHeader") {
+        target("**/src/**/*.java")
+        licenseHeaderFile(rootProject.file("gradle/license-header.txt"), "package ")
+    }
 }
 
 val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().split(";")
@@ -28,12 +28,16 @@ labyMod {
         author = "leoms1408"
         description = "Upload your screenshots directly to imageserver.pw"
         minecraftVersion = "*"
-        version = System.getenv().getOrDefault("VERSION", "2.0.0")
+        version = rootProject.version.toString()
     }
 
     minecraft {
         registerVersion(versions.toTypedArray()) {
             runs {
+                getByName("client") {
+                    // When the property is set to true, you can log in with a Minecraft account
+                    // devLogin = true
+                }
             }
         }
     }
@@ -43,4 +47,11 @@ subprojects {
     plugins.apply("net.labymod.labygradle")
     plugins.apply("net.labymod.labygradle.addon")
 
+    group = rootProject.group
+    version = rootProject.version
+
+    extensions.findByType(JavaPluginExtension::class.java)?.apply {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
 }

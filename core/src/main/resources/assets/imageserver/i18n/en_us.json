@@ -27,7 +27,9 @@
             "title": "imageserver.pw"
         },
         "messages": {
-            "noToken": "You don't have an AUTH Key. When you continue your screenshot will be deleted after 7 days."
+            "noToken": "You don't have an AUTH Key. When you continue your screenshot will be deleted after 7 days.",
+            "uploading": "Uploading screenshot...",
+            "alreadyUploading": "This screenshot is already being uploaded."
         },
         "buttons": {
             "upload": "Upload",
@@ -38,7 +40,15 @@
             "title": "An error occurred!",
             "unknown": "The upload failed for an unknown reason.",
             "file": "File not found!",
-            "uploadCancelled": "Screenshot upload cancelled!"
+            "uploadCancelled": "Screenshot upload cancelled!",
+            "invalidKey": "Your AUTH Key is invalid. Please check it in the addon settings.",
+            "tooLarge": "The screenshot is too large to upload.",
+            "rateLimited": "Too many uploads. Please wait a moment and try again.",
+            "rejected": "The server rejected the upload.",
+            "server": "imageserver.pw is currently unavailable. Please try again later.",
+            "network": "Could not connect to imageserver.pw. Check your internet connection.",
+            "timeout": "The upload timed out. Please try again.",
+            "invalidResponse": "The server returned an unexpected response."
         }
     }
 }
